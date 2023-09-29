@@ -1,12 +1,10 @@
 namespace ServiceFeeCalculator.Logic;
 
-public class ComplexRepairJob : RepairJob
+public class ComplexRepairJob(string description, string start, string end, string successful)
+    : RepairJob(description, start, end, successful)
 {
     private const decimal SUB_4_HOURS_RATE = 500m;
     private const decimal OVER_4_HOURS_RATE = 800m;
-
-    public ComplexRepairJob(string description, string start, string end, string successful) : base(description, start, end, successful)
-    { }
 
     public override decimal CalculateFee()
     {

@@ -1,11 +1,9 @@
 namespace ServiceFeeCalculator.Logic;
 
-public class RegularRepairJob : RepairJob
+public class RegularRepairJob(string description, string start, string end, string numberOfMechanics)
+    : TeamRepairJob(description, start, end, numberOfMechanics)
 {
     private const decimal TOTAL_HOUR_RATE = 80m;
 
-    public RegularRepairJob(string description, string start, string end) : base(description, start, end)
-    { }
-
-    public override decimal CalculateFee() => TotalStartedHours * TOTAL_HOUR_RATE;
+    public override decimal CalculateFeeSingleMechanic => TotalStartedHours * TOTAL_HOUR_RATE;
 }
