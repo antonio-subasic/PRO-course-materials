@@ -10,8 +10,11 @@ public abstract class Account
     public string AccountNumber { get; set; } = "";
     public string AccountHolder { get; set; } = "";
     public decimal CurrentBalance { get; set; }
+    public decimal InterestRate { get; set; }
 
     protected abstract bool IsAllowed(Transaction transaction);
+
+    public virtual decimal CalculateMonthlyInterests() => CurrentBalance * InterestRate / 12;
 
     public bool TryExecute(Transaction transaction)
     {

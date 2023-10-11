@@ -4,6 +4,7 @@ var account = HelperMethods.GetAccount(HelperMethods.GetStringInput($"Type of ac
 account.AccountNumber = HelperMethods.GetStringInput("Account number");
 account.AccountHolder = HelperMethods.GetStringInput("Account holder");
 account.CurrentBalance = HelperMethods.GetDecimalInput("Current balance");
+account.InterestRate = HelperMethods.GetDecimalInput("Interest rate");
 
 if (account is FixedDepositeAccount fda)
 {
@@ -11,16 +12,12 @@ if (account is FixedDepositeAccount fda)
     fda.FixedUntil = HelperMethods.GetDateOnlyInput("Fixed until date");
 }
 
-var transaction = new Transaction
+if (account is CheckingAccount or BusinessAccount && account.CurrentBalance < 0)
 {
-    AccountNumber = HelperMethods.GetStringInput("Transaction account number"),
-    Description = HelperMethods.GetStringInput("Transaction description"),
-    Timestamp = HelperMethods.GetDateTimeInput("Transaction timestamp"),
-    Amount = HelperMethods.GetDecimalInput("Transaction amount")
-};
+    var borrowingRate = HelperMethods.GetDecimalInput("Borrowing rate");
 
-Console.WriteLine();
-Console.WriteLine(account.TryExecute(transaction)
-    ? $"Transaction executed successfully. The new current balance is {account.CurrentBalance}€."
-    : "Transaction not allowed."
-);
+    if (account is CheckingAccount ca) { ca.BorrowingRate = borrowingRate; }
+    else if (account is BusinessAccount ba) { ba.BorrowingRate = borrowingRate; }
+}
+
+Console.WriteLine($"\nThe monthly interest is {Math.Round(account.CalculateMonthlyInterests(), 2)}€.");

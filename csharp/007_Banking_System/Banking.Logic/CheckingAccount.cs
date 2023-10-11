@@ -1,6 +1,6 @@
 namespace Banking.Logic;
 
-public class CheckingAccount : Account
+public class CheckingAccount : BorrowingAccount
 {
     private const decimal MIN_BALANCE = -10_000;
     private const decimal MAX_BALANCE = 10_000_000;
