@@ -12,12 +12,9 @@ if (account is FixedDepositeAccount fda)
     fda.FixedUntil = HelperMethods.GetDateOnlyInput("Fixed until date");
 }
 
-if (account is CheckingAccount or BusinessAccount && account.CurrentBalance < 0)
+if (account is BorrowingAccount ba && account.CurrentBalance < 0)
 {
-    var borrowingRate = HelperMethods.GetDecimalInput("Borrowing rate");
-
-    if (account is CheckingAccount ca) { ca.BorrowingRate = borrowingRate; }
-    else if (account is BusinessAccount ba) { ba.BorrowingRate = borrowingRate; }
+    ba.BorrowingRate = HelperMethods.GetDecimalInput("Borrowing rate");
 }
 
 Console.WriteLine($"\nThe monthly interest is {Math.Round(account.CalculateMonthlyInterests(), 2)}€.");
