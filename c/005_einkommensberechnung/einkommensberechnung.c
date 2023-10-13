@@ -21,13 +21,24 @@ int main()
     const int incomeRates[8] = {0, 11000, 18000, 31000, 60000, 90000, 1000000, -1};
     const int taxRates[7] = {0, 20, 35, 42, 48, 50, 55};
 
-    float income;
+    float income, advertisementCost, commuterAllowance, distanceToWork;
+
     printf("Enter your income: ");
     scanf("%f", &income);
 
+    printf("Enter your advertisement cost: ");
+    scanf("%f", &advertisementCost);
+
+    printf("Enter your commuter allowance: ");
+    scanf("%f", &commuterAllowance);
+
+    printf("Enter the distance to work: ");
+    scanf("%f", &distanceToWork);
+
     int incomeRatesLength = sizeof(incomeRates) / sizeof(incomeRates[0]);
     float originalIncome = income;
-    float tax = 0;
+    float tax = -(distanceToWork * 2);
+    income -= advertisementCost + commuterAllowance;
 
     for (int i = 0; income > 0; i++)
     {
@@ -39,7 +50,6 @@ int main()
     }
 
     printf("Total tax: %1.2f€\n", tax);
-    printf("Netto income: %1.2f€\n", originalIncome - tax);
 
     return 0;
 }
