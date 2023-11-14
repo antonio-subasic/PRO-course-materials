@@ -22,6 +22,8 @@ int getPosition()
     }
 }
 
+int setBit(int pos) { return 1 << (pos - 1); }
+
 int printRegister(unsigned char reg)
 {
     int i;
@@ -52,30 +54,25 @@ int main()
     reg = (char)value;
     printRegister(reg);
 
-    int pos;
     unsigned char x;
 
     printf("Which position do you want to turn on: ");
-    pos = getPosition();
-    x = 1 << (pos - 1);
+    x = setBit(getPosition());
     reg = reg | x;
     printRegister(reg);
 
     printf("Which position do you want to turn off: ");
-    pos = getPosition();
-    x = 1 << (pos - 1);
+    x = setBit(getPosition());
     reg = reg & ~x;
     printRegister(reg);
 
     printf("Which position do you want to change: ");
-    pos = getPosition();
-    x = 1 << (pos - 1);
+    x = setBit(getPosition());
     reg = reg ^ x;
     printRegister(reg);
 
     printf("Which position do you want to check: ");
-    pos = getPosition();
-    x = 1 << (pos - 1);
+    x = setBit(getPosition());
 
     printf("\nBit is %sset", (reg & x) == x ? "" : "not ");
 
