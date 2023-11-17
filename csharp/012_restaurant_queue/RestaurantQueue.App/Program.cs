@@ -10,14 +10,14 @@ const int REMOVE = 6;
 #endregion
 
 #region Choice Options Output
-Console.WriteLine("""
+Console.WriteLine($"""
 What do you want to do?
-1) Add a customer to the queue
-2) Seat the next customer
-3) Display the queue
-4) Save the queue to queue.json
-5) Load the queue from queue.json
-6) Remove customer from the queue
+{ADD}) Add a customer to the queue
+{SEAT}) Seat the next customer
+{DISPLAY}) Display the queue
+{SAVE}) Save the queue to queue.json
+{LOAD}) Load the queue from queue.json
+{REMOVE}) Remove customer from the queue
 """);
 #endregion
 
