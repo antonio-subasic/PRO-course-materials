@@ -1,38 +1,25 @@
 ﻿using Warehouse.Logic;
 
-var mainStack = new ClothesStack();
-var tempStack = new ClothesStack();
-
+var warehouse = new Warehouse.Logic.Warehouse();
 var operations = File.ReadAllLines(args[0]).Select(line => line.Split(' ')).ToArray();
 
-foreach (var operation in operations)
+for (var i = 0; i < operations.Length; i++)
 {
-    Console.WriteLine(string.Join(' ', operation));
+    var operation = (action: operations[i][0], item: new Box(operations[i][1]));
 
-    var item = operation[1];
+    Console.WriteLine($"{operation.action} {operation.item}");
 
-    switch (operation[0].ToLower())
+    switch (operation.action.ToLower())
     {
         case "incoming":
-            mainStack.Push(new(item));
+            warehouse.Push(operation.item);
             break;
 
         case "shipping":
-            for (var itemToShip = mainStack.Pop(); itemToShip is not null && itemToShip.Name != item; itemToShip = mainStack.Pop())
-            {
-                tempStack.Push(itemToShip);
-            }
-
-            for (var tempItem = tempStack.Pop(); tempItem is not null; tempItem = tempStack.Pop())
-            {
-                mainStack.Push(tempItem);
-            }
-
+            warehouse.PopBox(operation.item);
             break;
     }
 
-    Console.WriteLine(mainStack);
-    Console.WriteLine($"Box movements: {mainStack.Movements}\n");
+    Console.WriteLine(warehouse);
+    Console.WriteLine($"{(i == operations.Length - 1 ? "Total b" : "B")}ox movements: {warehouse.Movements}\n");
 }
-
-Console.WriteLine($"Total box movements: {mainStack.Movements}");
