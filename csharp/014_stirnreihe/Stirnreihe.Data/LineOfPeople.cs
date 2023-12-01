@@ -11,7 +11,10 @@ public class LineOfPeople
         // set First to the new Node, which contains:
         // the person to be added
         // the old First as the next Node
-        First = new(person, First);
+        First = new(person, next: First);
+
+        // set the previous of the next Node (old First) to the new Node
+        if (First.Next is not null) { First.Next.Previous = First; }
     }
 
     public int AddSorted(Person person)
@@ -25,20 +28,26 @@ public class LineOfPeople
         }
         else
         {
-            var old = First;
             var index = 0;
-
-            for (var current = First?.Next; ; old = current, current = current?.Next, index++)
+            for (var current = First; ; current = current?.Next, index++)
             {
-                // if the current Node is null (reached end of line)
-                // or the person to insert is shorter than the current person in the line
-                if (current is null || person.Height < current.Person.Height)
+                // if the next Node is null (reached end of line)
+                // or the person to insert is shorter than the next person in the line
+                if (current?.Next is null || person.Height < current.Next.Person.Height)
                 {
-                    // set the old.Next to the new Node, which contains:
+                    // set the current to the new Node, which contains:
                     // the person to be added
-                    // the current as the next Node
-                    old.Next = new(person, current);
-                    return index + 1;
+                    // the node after the current as the next Node
+                    // the current as the previous Node
+                    current = new(person, next: current?.Next, previous: current);
+
+                    // set the previous of the next Node (old current.Next) to the new Node
+                    if (current.Next is not null) { current.Next.Previous = current; }
+
+                    // set the next of the previous Node (old current.Previous) to the new Node
+                    if (current.Previous is not null) { current.Previous.Next = current; }
+
+                    return index;
                 }
             }
         }
@@ -50,9 +59,12 @@ public class LineOfPeople
         {
             // get the first person from the line
             var person = First?.Person;
-            
+
             // remove the first person from the line
             First = First?.Next;
+
+            // set the previous pointer of the new first Node to null
+            if (First is not null) { First.Previous = null; }
 
             // return the first person
             return person;
@@ -71,6 +83,9 @@ public class LineOfPeople
 
                     // remove the next Node
                     current.Next = current.Next?.Next;
+
+                    // set the previous pointer of the new next Node to the current Node
+                    if (current.Next is not null) { current.Next.Previous = current; }
 
                     // return the person
                     return person;

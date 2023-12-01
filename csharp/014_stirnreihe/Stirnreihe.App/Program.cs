@@ -36,7 +36,7 @@ do
             break;
 
         case ADD_SORTED:
-            Console.WriteLine(lineOfPeople.AddSorted(GetPersonFromUser()));
+            lineOfPeople.AddSorted(GetPersonFromUser());
             break;
 
         case PRINT:
@@ -47,8 +47,7 @@ do
         case REMOVE_AT:
             {
                 Console.Write("Enter the index of the person you want to remove: ");
-                var index = int.Parse(Console.ReadLine()!);
-                var person = lineOfPeople.RemovePersonAt(index);
+                var person = lineOfPeople.RemovePersonAt(int.Parse(Console.ReadLine()!));
                 Console.WriteLine(person is null ? "Removed noone" : $"Removed person: {person}");
                 break;
             }
