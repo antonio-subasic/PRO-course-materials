@@ -1,49 +1,57 @@
-class InPlace
+static class NewList
 {
-    private List<long> _numbers = [];
-
-    public void GenerateNumbers(long start, long end)
+    public static List<long> GenerateNumbers(long start, long end)
     {
+        var numbers = new List<long>();
+
         for (var i = start; i <= end; i++)
         {
-            _numbers.Add(i);
+            numbers.Add(i);
         }
+
+        return numbers;
     }
 
-    public void InsertSumAfterPairs()
+    public static List<long> InsertSumAfterPairs(List<long> numbers)
     {
-        for (var i = 0; i < _numbers.Count; i += 3)
+        for (var i = 0; i < numbers.Count; i += 3)
         {
-            _numbers.Insert(i + 2, _numbers[i] + _numbers[i + 1]);
+            numbers.Insert(i + 2, numbers[i] + numbers[i + 1]);
         }
+
+        return numbers;
     }
 
-    public void RemoveEvenNumbers()
+    public static List<long> RemoveEvenNumbers(List<long> numbers)
     {
-        for (var i = 0; i < _numbers.Count; i++)
+        for (var i = 0; i < numbers.Count; i++)
         {
-            if (_numbers[i] % 2 == 0)
+            if (numbers[i] % 2 == 0)
             {
-                _numbers.RemoveAt(i--);
+                numbers.RemoveAt(i--);
             }
         }
+
+        return numbers;
     }
 
-    public void ReplaceWithRunningTotal()
+    public static List<long> ReplaceWithRunningTotal(List<long> numbers)
     {
         long runningTotal = 0;
-        for (var i = 0; i < _numbers.Count; i++)
+        for (var i = 0; i < numbers.Count; i++)
         {
-            _numbers[i] = runningTotal += _numbers[i];
+            numbers[i] = runningTotal += numbers[i];
         }
+
+        return numbers;
     }
 
-    public long CalculateSum()
+    public static long CalculateSum(List<long> numbers)
     {
         long sum = 0;
-        foreach (var number in _numbers) { sum += number; }
+        foreach (var number in numbers) { sum += number; }
         return sum;
     }
 
-    public long CalculateResult() => CalculateSum() / _numbers.Count + CalculateSum();
+    public static long CalculateResult(List<long> numbers) => CalculateSum(numbers) / numbers.Count + CalculateSum(numbers);
 }
