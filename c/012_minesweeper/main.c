@@ -50,6 +50,38 @@ int Ausgabe_int(int matrixAusgabe[zeilenMax][spaltenMax]) {
   return 0;
 }
 
+/*************** Berechne Anzahl der Nachbar-Minen *****/
+int Nachbar_Minen(int matrix[zeilenMax][spaltenMax]) {
+  int zeile = 0;
+  int spalte = 0;
+  int z;
+  int sp;
+  int anzahl = 0;
+
+  for (zeile = 0; zeile < zeilenMax; zeile++) {
+    for (spalte = 0; spalte < spaltenMax; spalte++) {
+      if (matrix[zeile][spalte] != 9) // kein Minenfeld
+      {
+        anzahl = 0;
+        for (z = zeile - 1; z <= zeile + 1; z++) {
+          for (sp = spalte - 1; sp <= spalte + 1; sp++) {
+            if (z >= 0 && z < zeilenMax && sp >= 0 && sp < spaltenMax) {
+              if (matrix[z][sp] == 9) {
+                anzahl++;
+              }
+            }
+          }
+        }
+        matrix[zeile][spalte] = anzahl;
+      }
+    }
+  }
+
+  Ausgabe_int(matrix); // Testausgabe
+
+  return 0;
+}
+
 /***********Hauptprogramm********/
 int main(void) {
   int matrix[zeilenMax][spaltenMax] = {
@@ -71,6 +103,9 @@ int main(void) {
   int z;
   int sp;
 
+  // ****** Matrix bearbeiten **********
+  Nachbar_Minen(matrix);
+
   while (ende == 0) {
     Ausgabe(matrixAusgabe);
 
@@ -83,14 +118,27 @@ int main(void) {
     spalte = spalte - 1;
     getchar();
 
-    if (matrix[zeile][spalte] == 9) {
-      printf("Sie haben eine Bombe getroffen! \n");
-      matrixAusgabe[zeile][spalte] = 'x';
-      Ausgabe(matrixAusgabe);
-      ende = 1;
+    if (matrixAusgabe[zeile][spalte] == '0') // bereits aufgedecktes Feld
+    {
+      printf("Dieses Feld wurde schon getippt\n");
+      getchar();
     } else {
-      matrixAusgabe[zeile][spalte] = 'o';
+      if (matrix[zeile][spalte] == 9) // Minenfeld
+      {
+        matrixAusgabe[zeile][spalte] = 'X';
+        Ausgabe(matrixAusgabe);
+        printf("Miene! Leider verloren!\n");
+        ende = 1;
+      } else {
+        matrixAusgabe[zeile][spalte] =
+            matrix[zeile][spalte] + 48; // leeres Feld aufdecken
+      }
       versuche++;
+    }
+    if (versuche == 13) // alle Felder aufgedeckt
+    {
+      printf("Hurra, Sie haben gewonnen!\n");
+      ende = 1;
     }
   }
   printf("Sie hatten %d erfolgreiche Versuche. \n", versuche);
