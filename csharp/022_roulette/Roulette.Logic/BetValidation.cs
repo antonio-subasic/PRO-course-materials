@@ -35,7 +35,7 @@ public class Bet(MultiNumberBetType betType, HashSet<int> numbers)
             _ => null
         };
 
-        return collection is not null && collection.Any(hashset => hashset.SetEquals(numbers));
+        return collection is not null && Contains(collection, numbers);
 
     }
 
