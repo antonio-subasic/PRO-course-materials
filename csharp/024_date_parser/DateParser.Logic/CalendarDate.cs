@@ -35,7 +35,7 @@ public class CalendarDate(int year, int month, int day)
     /// </exception>
     public static CalendarDate Parse(string dateString)
     {
-        if (dateString is null or "" || dateString.Length != 10) { throw new ArgumentOutOfRangeException("date string has invalid length"); }
+        if (string.IsNullOrEmpty(dateString) || dateString.Length != 10) { throw new ArgumentOutOfRangeException("date string has invalid length"); }
         else if (!new Regex(@"^\d{2}\.\d{2}\.\d{4}$").IsMatch(dateString)) { throw new FormatException("date string has invalid format"); }
         else
         {
