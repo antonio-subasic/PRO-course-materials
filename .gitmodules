@@ -4,3 +4,6 @@
 [submodule "csharp/019_train_switching"]
 	path = csharp/019_train_switching
 	url = https://github.com/Teaching-HTL-Leonding/train-switching-antonio-subasic.git
+[submodule "csharp/026_vending_machine"]
+	path = csharp/026_vending_machine
+	url = https://github.com/Teaching-HTL-Leonding/vending-machine-antonio-subasic.git
