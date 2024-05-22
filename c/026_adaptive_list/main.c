@@ -104,7 +104,7 @@ void printReverseList() {
   printf("\n");
 }
 
-struct Node *search(int key) {
+struct Node *moveToFront(int key) {
   struct Node *current = head;
   while (current != NULL) {
     if (current->data == key) {
@@ -155,13 +155,13 @@ int main(void) {
 
   printList();
 
-  search(5);
+  moveToFront(5);
   printList();
 
-  search(10);
+  moveToFront(10);
   printList();
 
-  search(1);
+  moveToFront(1);
   printList();
 
   freeList();
