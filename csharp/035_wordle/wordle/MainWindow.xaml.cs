@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -198,23 +201,55 @@ namespace wordle
 
         private bool EvaluateGuess(int row, string guessed)
         {
-            for (var i = 0; i < guessed.Length; i++)
+            var found = new Dictionary<char, SolidColorBrush>();
+
+            var guess = guessed.Select((c, index) => (c, index, evaluated: false)).ToArray();
+            var toGuess = _toGuess.Select((c, index) => (c, index, evaluated: false)).ToArray();
+
+            for (var i = 0; i < guess.Length; i++)
             {
-                var color = guessed[i] == _toGuess[i] ? Brushes.Green : _toGuess.Contains(guessed[i]) ? Brushes.Yellow : Brushes.Gray;
-
-                SetColorOnBoard(row, i, color);
-
-                for (var j = 0; j < Keyboard.Children.Count; j++)
+                if (guess[i].c == toGuess[i].c)
                 {
-                    for (var k = 0; k < ((StackPanel)Keyboard.Children[j]).Children.Count; k++)
-                    {
-                        var button = (Button)((StackPanel)Keyboard.Children[j]).Children[k];
+                    guess[i].evaluated = toGuess[i].evaluated = true;
+                    SetColorOnBoard(row, i, Brushes.Green);
+                    found.Add(guess[i].c, Brushes.Green);
+                }
+            }
 
-                        if (button.Content.ToString() == guessed[i].ToString())
-                        {
-                            SetColorOnKeyboard(j, k, color);
-                            break;
-                        }
+            for (var i = 0; i < guess.Length; i++)
+            {
+                if (!guess[i].evaluated)
+                {
+                    var foundItem = toGuess.FirstOrDefault(item => !item.evaluated && item.c == guess[i].c);
+
+                    if (foundItem.c != default(char))
+                    {
+                        toGuess[foundItem.index].evaluated = guess[i].evaluated = true;
+                        SetColorOnBoard(row, i, Brushes.Yellow);
+                        if (!found.ContainsKey(guess[i].c)) { found.Add(guess[i].c, Brushes.Yellow); }
+                    }
+                }
+            }
+
+            for (var i = 0; i < guess.Length; i++)
+            {
+                if (!guess[i].evaluated)
+                {
+                    SetColorOnBoard(row, i, Brushes.Gray);
+                    if (!found.ContainsKey(guess[i].c)) { found.Add(guess[i].c, Brushes.Gray); }
+                }
+            }
+
+            for (var i = 0; i < Keyboard.Children.Count; i++)
+            {
+                for (var j = 0; j < ((StackPanel)Keyboard.Children[i]).Children.Count; j++)
+                {
+                    var button = (Button)((StackPanel)Keyboard.Children[i]).Children[j];
+                    var content = button.Content.ToString();
+
+                    if (content?.Length == 1 && found.TryGetValue(content[0], out var color))
+                    {
+                        SetColorOnKeyboard(i, j, color);
                     }
                 }
             }
