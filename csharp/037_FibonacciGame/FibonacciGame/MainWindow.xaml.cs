@@ -136,7 +136,7 @@ namespace FibonacciGame
                     _numberInputElement.Background = Brushes.White;
                     (_fibonacciNumbers.first, _fibonacciNumbers.second) = (_fibonacciNumbers.second, numberInput);
                     _numbersSequenceElement.Children.Insert(_numbersSequenceElement.Children.Count - 1, GenerateGrid(_numberInputElement.Text));
-                    _points = _numberInputElement.Text.Length;
+                    _points = (int)Math.Pow(_numberInputElement.Text.Length, 2);
                     _numberInputElement.Clear();
                 }
                 else if (_numberInputElement.Background != Brushes.Red)
